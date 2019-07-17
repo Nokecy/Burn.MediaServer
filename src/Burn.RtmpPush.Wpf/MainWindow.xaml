@@ -1,0 +1,68 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Burn.RtmpPush.Wpf.Models"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:UserControls="clr-namespace:Burn.RtmpPush.Wpf.UserControls"
+    xmlns:local1="clr-namespace:Burn.RtmpPush.Wpf.ViewModels" x:Class="Burn.RtmpPush.Wpf.MainWindow"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="onVif摄像头推流器"
+        Icon="Resources/taskbar.ico">
+
+    <Window.Resources>
+        <DataTemplate x:Name="DeviceDataTemplate" DataType="{x:Type local:DeviceModel}">
+            <UserControls:OnvifDeviceInfo OnvifName="{Binding HardwareId}" OnvifMediaAddress="{Binding MediaXAddr}" OnvifRtspAddress="{Binding RtspAddr}" OnvifChannel="{Binding Channel}" />
+        </DataTemplate>
+        <local1:NegateConverter x:Key="NegateConverter"/>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local1:MainWindowViewModel PushUrl="rtmp://127.0.0.1"/>
+    </Window.DataContext>
+
+    <Grid Margin="0,10,0,0">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Height="200" VerticalAlignment="Top">
+            <materialDesign:Card VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Top">
+                <Grid>
+                    <Grid Height="45" VerticalAlignment="Top" >
+                        <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" HorizontalAlignment="Left" VerticalAlignment="Center">操作区</TextBlock>
+                    </Grid>
+
+                    <Label Content="用户名" Margin="10,50,692,122"/>
+                    <Label Content="密码" Margin="268,50,434,122"/>
+
+                    <TextBox Style="{DynamicResource MaterialDesignTextBox}" Height="30" Width="150" Margin="63,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding UserName}"/>
+                    <TextBox Style="{DynamicResource MaterialDesignTextBox}" Height="30"  Width="178"  Margin="307,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding PassWord}"/>
+                    <Label Content="推流地址" Margin="0,102,702,70"/>
+                    <TextBox Style="{DynamicResource MaterialDesignTextBox}" Height="30" Margin="63,0,249,70" HorizontalAlignment="Left" Width="448" VerticalAlignment="Bottom" Text="{Binding PushUrl}" />
+                    <Button Name="StartPush" Content="启动推流" HorizontalAlignment="Left" Width="92" VerticalAlignment="Bottom" Margin="63,0,0,22" Click="StartPush_Click" IsEnabled="{Binding IsStart,Converter={StaticResource NegateConverter}}"/>
+                    <Button Name="StopPush" Content="停止推流" HorizontalAlignment="Left" Width="92" VerticalAlignment="Bottom" Margin="184,0,0,22" Click="StopPush_Click" IsEnabled="{Binding IsStart}"/>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <materialDesign:Card VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Top">
+                <Grid>
+                    <Grid Height="45" VerticalAlignment="Top" >
+                        <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" HorizontalAlignment="Left" VerticalAlignment="Center">onVif设备列表</TextBlock>
+                        <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 16 -20">
+                            <materialDesign:PackIcon Kind="Bike" />
+                        </Button>
+                    </Grid>
+                    <ListView Margin="8,45,0,0" ItemsSource="{Binding DeviceModels}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>

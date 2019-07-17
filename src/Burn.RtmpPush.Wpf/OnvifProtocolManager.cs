@@ -23,7 +23,7 @@ namespace Burn.RtmpPush.Wpf
             return devices.ToList();
         }
 
-        public async Task<Tuple<string, GetDeviceInformationResponse>> GetDeviceInfoAsync(string deviceAddress)
+        public async Task<Tuple<string, GetDeviceInformationResponse>> GetDeviceInfoAsync(string deviceAddress, string userName, string password)
         {
             var messageElement = new TextMessageEncodingBindingElement
             {
@@ -39,7 +39,7 @@ namespace Burn.RtmpPush.Wpf
             EndpointAddress serviceAddress = new EndpointAddress(deviceAddress);
             DeviceClient deviceClient = new DeviceClient(bind, serviceAddress);
             //给每个请求都添加认证信息
-            deviceClient.Endpoint.EndpointBehaviors.Add(new CustomEndpointBehavior());
+            deviceClient.Endpoint.EndpointBehaviors.Add(new CustomEndpointBehavior(userName, password));
 
             //查看系统时间
             var date = await deviceClient.GetSystemDateAndTimeAsync();
@@ -52,7 +52,7 @@ namespace Burn.RtmpPush.Wpf
             return Tuple.Create<string, GetDeviceInformationResponse>(cap.Capabilities.Media.XAddr.ToString(), deviceInfo);
         }
 
-        public async Task<string> GetMediaInfoAsync(string mediaAddress)
+        public async Task<string> GetMediaInfoAsync(string mediaAddress, string userName, string password)
         {
             var messageElement = new TextMessageEncodingBindingElement
             {
@@ -69,7 +69,7 @@ namespace Burn.RtmpPush.Wpf
             MediaClient mediaClient = new MediaClient(bind, serviceAddress);
 
             //给每个请求都添加认证信息
-            mediaClient.Endpoint.EndpointBehaviors.Add(new CustomEndpointBehavior());
+            mediaClient.Endpoint.EndpointBehaviors.Add(new CustomEndpointBehavior(userName, password));
             //不要少了下面这行，会报异常
             var channel = mediaClient.ChannelFactory.CreateChannel();
             //查看系统时间

@@ -7,11 +7,11 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Burn.RtmpPush.Wpf")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("onvif协议摄像头 推流器")]
+[assembly: AssemblyDescription("支持onvif协议摄像头，获取RTSP推流到RTMP流媒体服务器实现内网转外网")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Burn.RtmpPush.Wpf")]
+[assembly: AssemblyProduct("Burn.RtmpPush")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

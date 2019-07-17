@@ -20,7 +20,7 @@
     </Window.Resources>
 
     <Window.DataContext>
-        <local1:MainWindowViewModel PushUrl="rtmp://127.0.0.1"/>
+        <local1:MainWindowViewModel PushUrl="rtmp://127.0.0.1" UserName="admin" PassWord="mingming5288"/>
     </Window.DataContext>
 
     <Grid Margin="0,10,0,0">

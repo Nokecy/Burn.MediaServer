@@ -13,8 +13,13 @@ namespace Anub.Abp.ONVIF
     {
         private const string NAMESPACE_SECURITY_0 = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
         private const string NAMESPACE_SECURITY_1 = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
-        public CustomMessageHeader()
+        private readonly string UserName;
+        private readonly string PassWord;
+
+        public CustomMessageHeader(string userName, string password)
         {
+            UserName = userName;
+            PassWord = password;
         }
         public override string Name
         {
@@ -27,8 +32,8 @@ namespace Anub.Abp.ONVIF
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            string username = "admin";
-            string password = "mingming5288";
+            string username = UserName;
+            string password = PassWord;
             string nonce = GetNonce();
             string created = GetCreated();
             string digest = GetPasswordDigest(nonce, created, password);
@@ -99,9 +104,18 @@ namespace Anub.Abp.ONVIF
 
     public class ClientMessageInspector : IClientMessageInspector
     {
+        private readonly string UserName;
+        private readonly string PassWord;
+
+        public ClientMessageInspector(string userName, string password)
+        {
+            UserName = userName;
+            PassWord = password;
+        }
+
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
-            CustomMessageHeader header = new CustomMessageHeader();
+            CustomMessageHeader header = new CustomMessageHeader(UserName, PassWord);
             try
             {
                 //会有一些无用的默认header信息，可以删掉
@@ -119,13 +133,22 @@ namespace Anub.Abp.ONVIF
 
     public class CustomEndpointBehavior : IEndpointBehavior
     {
+        private readonly string UserName;
+        private readonly string PassWord;
+
+        public CustomEndpointBehavior(string userName, string password)
+        {
+            UserName = userName;
+            PassWord = password;
+        }
+
         public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
         {
         }
 
         public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
         {
-            clientRuntime.ClientMessageInspectors.Add(new ClientMessageInspector());
+            clientRuntime.ClientMessageInspectors.Add(new ClientMessageInspector(UserName, PassWord));
         }
 
         public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)

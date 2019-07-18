@@ -32,12 +32,36 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="server.ts" />
+    <Content Include="api\controllers\relay.js" />
+    <Content Include="api\controllers\server.js" />
+    <Content Include="api\controllers\streams.js" />
+    <Content Include="api\routes\relay.js" />
+    <Content Include="api\routes\server.js" />
+    <Content Include="api\routes\streams.js" />
+    <Content Include="public\admin\index.html" />
+    <Content Include="public\favicon.ico" />
+    <Content Include="public\manifest.json" />
+    <Content Include="public\static\css\2.ceb657f8.chunk.css" />
+    <Content Include="public\static\css\main.a08da4e0.chunk.css" />
+    <Content Include="public\static\js\2.8cb41161.chunk.js" />
+    <Content Include="public\static\js\main.4071166f.chunk.js" />
+    <Content Include="public\static\js\runtime~main.c5541365.js" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="mediaServer.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api\" />
+    <Folder Include="api\controllers\" />
+    <Folder Include="api\routes\" />
+    <Folder Include="public\" />
+    <Folder Include="public\admin\" />
+    <Folder Include="public\static\" />
+    <Folder Include="public\static\css\" />
+    <Folder Include="public\static\js\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

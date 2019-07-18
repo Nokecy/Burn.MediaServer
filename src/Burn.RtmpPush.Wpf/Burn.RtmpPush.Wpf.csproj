@@ -148,12 +148,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Anub.Abp.ONVIF\Anub.Abp.ONVIF.csproj">
-      <Project>{7de47905-7363-4969-b008-b8d88c698004}</Project>
-      <Name>Anub.Abp.ONVIF</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\taskbar.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +161,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Burn.ONVIF\Burn.ONVIF.csproj">
+      <Project>{1aa4fa7e-30a2-4fa0-b0d8-287cf18c289a}</Project>
+      <Name>Burn.ONVIF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

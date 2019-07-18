@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Xabe.FFmpeg;
+using Xabe.FFmpeg.Enums;
 
 namespace Burn.RtmpPush.Wpf
 {
@@ -15,11 +16,11 @@ namespace Burn.RtmpPush.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ConversionQueue Queue;
-
+        private Dictionary<string, CancellationTokenSource> TokenDictionary;
         public MainWindow()
         {
             InitializeComponent();
+            TokenDictionary = new Dictionary<string, CancellationTokenSource>();
             FFmpeg.ExecutablesPath = @"C:\Program Files\ffmpeg\bin";
         }
 
@@ -32,26 +33,23 @@ namespace Burn.RtmpPush.Wpf
 
         private void StartPush_Click(object sender, RoutedEventArgs e)
         {
-            Queue = new ConversionQueue(parallel: false);
             var viewModel = DataContext as MainWindowViewModel;
-            foreach (var item in viewModel.DeviceModels)
+            foreach (var item in viewModel.DeviceModels.Where(a => a.HardwareId != "255").Take(5))
             {
-                Queue.Add(Conver(item.RtspAddr, $"{viewModel.PushUrl}/{item.Channel}"));
+                var tokenSource = new CancellationTokenSource();
+                string arguments = $"-i \"{item.RtspAddr}\"  -vcodec copy -acodec aac -f flv \"{viewModel.PushUrl}/BurnPush/{item.Channel}\"";
+                var conver = Conver().Start(arguments, tokenSource.Token);
+                TokenDictionary.Add(item.HardwareId, tokenSource);
             }
-            Queue.OnException += Queue_OnException;
-            Queue.Start();
             viewModel.IsStart = true;
-        }
-
-        private void Queue_OnException(int currentItemNumber, int totalItemsCount, IConversion conversion)
-        {
-            Console.WriteLine("Exception");
         }
 
         private void StopPush_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as MainWindowViewModel;
-            Queue.Dispose();
+
+            StopPushStream();
+
             viewModel.IsStart = false;
         }
 
@@ -77,15 +75,23 @@ namespace Burn.RtmpPush.Wpf
              }));
         }
 
-        private IConversion Conver(string inputfile, string outputPath)
+        private IConversion Conver()
         {
-            string arguments = $"-i \"{inputfile}\"  -vcodec copy -acodec aac -f flv \"{outputPath}\"";
             return new Conversion()
-                .UseMultiThread(true)
-                                                        //.UseShortest(true)
-                                                        .AddParameter($"-i \"{inputfile}\"")
-                                                        .AddParameter($"-vcodec copy -acodec aac -f flv")
-                                                        .SetOutput(outputPath);
+                                            .UseShortest(true)
+                                            .UseHardwareAcceleration(HardwareAccelerator.Auto, VideoCodec.Copy, VideoCodec.Copy)
+                                            .UseMultiThread(true);
+            //.AddParameter($"-i \"{inputfile}\"")
+            //.AddParameter($"-vcodec copy -acodec aac -f flv")
+            //.SetOutput(outputPath);
+        }
+
+        public void StopPushStream()
+        {
+            foreach (var item in TokenDictionary)
+            {
+                item.Value.Cancel();
+            }
         }
     }
 }

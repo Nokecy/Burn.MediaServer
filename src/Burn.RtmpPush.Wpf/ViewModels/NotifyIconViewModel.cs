@@ -51,7 +51,15 @@ namespace Burn.RtmpPush.Wpf.ViewModels
         {
             get
             {
-                return new DelegateCommand { CommandAction = () => Application.Current.Shutdown() };
+                return new DelegateCommand
+                {
+                    CommandAction = () =>
+                    {
+                        var window = Application.Current.MainWindow as MainWindow;
+                        window.StopPushStream();
+                        Application.Current.Shutdown();
+                    }
+                };
             }
         }
     }

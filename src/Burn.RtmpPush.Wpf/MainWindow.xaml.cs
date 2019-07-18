@@ -34,7 +34,7 @@ namespace Burn.RtmpPush.Wpf
         private void StartPush_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as MainWindowViewModel;
-            foreach (var item in viewModel.DeviceModels.Where(a => a.HardwareId != "255").Take(5))
+            foreach (var item in viewModel.DeviceModels.Where(a => a.HardwareId != "255").Take(8))
             {
                 var tokenSource = new CancellationTokenSource();
                 string arguments = $"-i \"{item.RtspAddr}\"  -vcodec copy -acodec aac -f flv \"{viewModel.PushUrl}/BurnPush/{item.Channel}\"";
@@ -79,7 +79,7 @@ namespace Burn.RtmpPush.Wpf
         {
             return new Conversion()
                                             .UseShortest(true)
-                                            .UseHardwareAcceleration(HardwareAccelerator.Auto, VideoCodec.Copy, VideoCodec.Copy)
+                                            .UseHardwareAcceleration(HardwareAccelerator.Auto, VideoCodec.H264, VideoCodec.H264)
                                             .UseMultiThread(true);
             //.AddParameter($"-i \"{inputfile}\"")
             //.AddParameter($"-vcodec copy -acodec aac -f flv")

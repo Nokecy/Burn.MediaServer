@@ -34,7 +34,7 @@ namespace Burn.RtmpPush.Wpf
         private void StartPush_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as MainWindowViewModel;
-            foreach (var item in viewModel.DeviceModels.Where(a => a.HardwareId != "255").Take(8))
+            foreach (var item in viewModel.DeviceModels.Where(a => a.HardwareId != "255").Take(1))
             {
                 var tokenSource = new CancellationTokenSource();
                 string arguments = $"-i \"{item.RtspAddr}\"  -vcodec copy -acodec aac -f flv \"{viewModel.PushUrl}/BurnPush/{item.Channel}\"";

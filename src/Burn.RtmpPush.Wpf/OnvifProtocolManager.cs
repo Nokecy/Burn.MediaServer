@@ -7,7 +7,6 @@ using OnvifSharp.Discovery.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
@@ -38,6 +37,7 @@ namespace Burn.RtmpPush.Wpf
             //绑定服务地址
             EndpointAddress serviceAddress = new EndpointAddress(deviceAddress);
             DeviceClient deviceClient = new DeviceClient(bind, serviceAddress);
+
             //给每个请求都添加认证信息
             deviceClient.Endpoint.EndpointBehaviors.Add(new CustomEndpointBehavior(userName, password));
 

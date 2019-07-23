@@ -77,10 +77,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Connected Services\Anub.Abp.ONVIF.Devices\ConnectedService.json" />
     <None Include="Connected Services\Anub.Abp.ONVIF.Events\ConnectedService.json" />
     <None Include="Connected Services\Anub.Abp.ONVIF.Medias\ConnectedService.json" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\System.Xml.XmlAttribute.datasource" />
+    <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

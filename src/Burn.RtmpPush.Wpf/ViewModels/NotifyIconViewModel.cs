@@ -56,7 +56,10 @@ namespace Burn.RtmpPush.Wpf.ViewModels
                     CommandAction = () =>
                     {
                         var window = Application.Current.MainWindow as MainWindow;
-                        window.StopPushStream();
+                        if (window != null)
+                        {
+                            window.StopPushStream();
+                        }
                         Application.Current.Shutdown();
                     }
                 };

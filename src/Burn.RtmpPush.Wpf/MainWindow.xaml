@@ -6,7 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:UserControls="clr-namespace:Burn.RtmpPush.Wpf.UserControls"
-    xmlns:local1="clr-namespace:Burn.RtmpPush.Wpf.ViewModels" x:Class="Burn.RtmpPush.Wpf.MainWindow"
+    xmlns:local1="clr-namespace:Burn.RtmpPush.Wpf.ViewModels"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="Burn.RtmpPush.Wpf.MainWindow"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="onVif摄像头推流器"
@@ -20,13 +21,14 @@
     </Window.Resources>
 
     <Window.DataContext>
-        <local1:MainWindowViewModel PushUrl="rtmp://127.0.0.1" UserName="admin" PassWord="mingming5288"/>
+        <local1:MainWindowViewModel PushUrl="rtmp://120.24.46.76" UserName="admin" PassWord="mingming5288"/>
     </Window.DataContext>
 
     <Grid Margin="0,10,0,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
+            <RowDefinition Height="150"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -50,7 +52,20 @@
             </materialDesign:Card>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Height="150" VerticalAlignment="Top">
+            <materialDesign:Card Height="140" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Top">
+                <Grid>
+                    <Grid Height="45" VerticalAlignment="Top" >
+                        <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,9">操作区</TextBlock>
+                    </Grid>
+                    <Label Content="选择网卡" Margin="0,35,690,80"/>
+                    <ComboBox Name="AddressComboBox" Style="{DynamicResource MaterialDesignComboBox}" Height="30" Margin="70,0,242,80" VerticalAlignment="Bottom" ItemsSource="{Binding AddressList}" />
+                    <Button Name="ScanBtn"  Content="搜索设备" HorizontalAlignment="Left" Width="92" VerticalAlignment="Bottom" Margin="70,0,0,38" IsEnabled="{Binding IsStart,Converter={StaticResource NegateConverter}}" RenderTransformOrigin="0.478,0.812" Click="ScanBtn_Click"/>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+
+        <Grid Grid.Row="2">
             <materialDesign:Card VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Top">
                 <Grid>
                     <Grid Height="45" VerticalAlignment="Top" >
@@ -60,7 +75,9 @@
                             <materialDesign:PackIcon Kind="Bike" />
                         </Button>
                     </Grid>
-                    <ListView Margin="8,45,0,0" ItemsSource="{Binding DeviceModels}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                    <xctk:BusyIndicator IsBusy="{Binding IsScan}" BusyContent="正在搜索设备,请稍后..." >
+                        <ListView Margin="8,45,0,0" ItemsSource="{Binding DeviceModels}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                    </xctk:BusyIndicator>
                 </Grid>
             </materialDesign:Card>
         </Grid>

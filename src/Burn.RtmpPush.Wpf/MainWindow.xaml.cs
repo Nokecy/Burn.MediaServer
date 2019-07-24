@@ -23,7 +23,7 @@ namespace Burn.RtmpPush.Wpf
         {
             InitializeComponent();
             TokenDictionary = new Dictionary<string, CancellationTokenSource>();
-            //FFmpeg.ExecutablesPath = @"C:\Program Files\ffmpeg\bin";
+            FFmpeg.ExecutablesPath = AppDomain.CurrentDomain.BaseDirectory + @"ffmpeg\bin";
         }
 
         protected override async void OnInitialized(EventArgs e)
@@ -117,6 +117,7 @@ namespace Burn.RtmpPush.Wpf
             {
                 item.Value.Cancel();
             }
+            TokenDictionary.Clear();
         }
 
         private async void ScanBtn_Click(object sender, RoutedEventArgs e)

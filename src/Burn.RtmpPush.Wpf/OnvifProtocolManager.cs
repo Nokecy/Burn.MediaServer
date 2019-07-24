@@ -18,7 +18,7 @@ namespace Burn.RtmpPush.Wpf
         public async Task<List<DiscoveryDevice>> FindNetworkDevices(string ipAddress)
         {
             var discovery = new WSDiscovery();
-            var devices = await discovery.Discover(5, new UdpClientWrapper(ipAddress, 9001));
+            var devices = await discovery.Discover(10, new UdpClientWrapper(ipAddress, 9001));
             return devices.ToList();
         }
 
